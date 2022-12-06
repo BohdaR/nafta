@@ -40,7 +40,7 @@ CREATE TABLE papers
     paper_format_id     integer references paper_formats,
     brand_id            integer references brands,
     binding_type_id     integer references binding_types,
-    manufacture_country integer references countries,
+    manufacture_country_id integer references countries,
     status              varchar(30) default 'new'
 );
 
