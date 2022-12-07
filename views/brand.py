@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 from db.Brands import Brands
 
-brand_api = Blueprint('brand_api', __name__)
+brand_api = Blueprint('brand_api', __name__, url_prefix='/api/v1')
 
 
 @brand_api.get('/brands')

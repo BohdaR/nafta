@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 from db.Countries import Countries
 
-country_api = Blueprint('country_api', __name__)
+country_api = Blueprint('country_api', __name__, url_prefix='/api/v1')
 
 
 @country_api.get('/countries')

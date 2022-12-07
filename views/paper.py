@@ -1,7 +1,7 @@
 from db.Papers import Papers
 from flask import request, Blueprint
 
-paper_api = Blueprint('paper_api', __name__)
+paper_api = Blueprint('paper_api', __name__, url_prefix='/api/v1')
 
 
 @paper_api.get('/papers')

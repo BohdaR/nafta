@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 from db.BindingTypes import BindingTypes
 
-binding_type_api = Blueprint('binding_type_api', __name__)
+binding_type_api = Blueprint('binding_type_api', __name__, url_prefix='/api/v1')
 
 
 @binding_type_api.get('/binding_types')
