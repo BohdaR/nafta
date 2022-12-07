@@ -1,5 +1,5 @@
 from db.db import Database
 
 
-class Brand(Database):
+class Colors(Database):
     pass

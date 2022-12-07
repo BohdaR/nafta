@@ -1,5 +1,5 @@
 from db.db import Database
 
 
-class Paper(Database):
+class PaperColors(Database):
     pass

@@ -1,3 +1,5 @@
+import re
+
 import psycopg2
 import psycopg2.extras
 import os
@@ -19,7 +21,9 @@ class Database:
             'password': env['DB_PASS'],
         })
         self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        self.subject = pluralizer.pluralize(type(self).__name__).lower()
+        self.subject = '_'.join(map(
+            lambda i: i.lower(),
+            re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', type(self).__name__)))
 
     def all(self):
         self.cursor.execute(f'SELECT * FROM {self.subject}')
@@ -39,14 +43,10 @@ class Database:
         return self.cursor.fetchall()
 
     def create(self, data: dict):
-        columns = ''
-        values = ''
+        columns = ','.join(map(str, data.keys()))
+        values = ','.join(map(lambda i: f"'{i}'", data.values()))
 
-        for column, value in data.items():
-            columns += f'{column},'
-            values += f"'{value}',"
-
-        query = f"INSERT INTO {self.subject} ({columns[0:-1]}) VALUES ({values[0:-1]}) RETURNING {columns[0:-1]};"
+        query = f"INSERT INTO {self.subject} ({columns}) VALUES ({values}) RETURNING id, {columns};"
         self.cursor.execute(query)
         self.connection.commit()
 

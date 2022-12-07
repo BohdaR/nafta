@@ -1,29 +1,29 @@
 from flask import request, Blueprint
-from db.Brand import Brand
+from db.Brands import Brands
 
 brand_api = Blueprint('brand_api', __name__)
 
 
 @brand_api.get('/brands')
 def index():
-    return Brand().all()
+    return Brands().all()
 
 
-@brand_api.get('/brands')
+@brand_api.get('/brands/<int:pk>')
 def show(pk):
-    return Brand().find(pk)
-
-
-@brand_api.route('/brands', methods=['POST', 'PUT', 'PATCH'])
-def update(pk):
-    return Brand().update(pk, **request.form)
+    return Brands().find(pk)
 
 
 @brand_api.route('/brands', methods=['POST'])
 def create():
-    return Brand().create(request.form)
+    return Brands().create(request.form)
 
 
-@brand_api.route('/brands', methods=['DELETE'])
+@brand_api.route('/brands/<int:pk>', methods=['POST', 'PUT', 'PATCH'])
+def update(pk):
+    return Brands().update(pk, **request.form)
+
+
+@brand_api.route('/brands/<int:pk>', methods=['DELETE'])
 def destroy(pk):
-    return Brand().destroy(pk)
+    return Brands().destroy(pk)
