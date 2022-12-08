@@ -14,12 +14,17 @@ class ManyToManyMixin:
 
     def all_target_records(self, pk, target_table, join_table):
         query = f'{self.__get_join_query(pk, target_table, join_table)};'
-        self.cursor.execute(query, (pk, ))
+        self.cursor.execute(query, (pk,))
         return self.cursor.fetchall()
 
     def find_target_record(self, pk, target_table, join_table, target_record_id):
         query = f'{self.__get_join_query(pk, target_table, join_table)} AND {target_table}.id = %s;'
         self.cursor.execute(query, (pk, target_record_id))
+        return self.cursor.fetchall()
+
+    def find_target_records(self, pk, target_table, join_table, target_column, target_column_value):
+        query = f'{self.__get_join_query(pk, target_table, join_table)} AND {target_table}.{target_column} = %s;'
+        self.cursor.execute(query, (pk, target_column_value))
         return self.cursor.fetchall()
 
     def add_target_record(self, pk, target_table, join_table, target_record_id):

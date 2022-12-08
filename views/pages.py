@@ -1,12 +1,16 @@
 from flask import request, Blueprint, render_template
 
+from db.Papers import Papers
+
 pages = Blueprint('pages', __name__)
 
 
 @pages.get('/')
 def index():
-    # return render_template('index.html')
-    return 'Hello'
+    context = {
+        'papers': Papers().all(),
+    }
+    return render_template('index.html', **context)
 
 
 @pages.get('/show')

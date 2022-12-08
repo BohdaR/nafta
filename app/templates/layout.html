@@ -6,12 +6,31 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css' ) }}">
+    <script src="{{ url_for('static', filename='script.js' ) }}"></script>
     <title>
         {% block title %}
         {% endblock %}
     </title>
 </head>
 <body>
+<header class="topNav">
+    <div class="container">
+        <div class="headerNav con">
+            <div class="topNavLeft"><a href="http://127.0.0.1:3000">Papers</a>
+                <a href="/brands">Brands</a>
+                <a href="/">Colors</a>
+                <a href="/user/reservation">Countries</a>
+                <a href="/user/reservation">Paper Formats</a>
+                <a href="/user/reservation">Paper Types</a>
+                <a href="/user/reservation">Papers colors</a>
+            </div>
+            <div class="topNavRight">
+                <a href="/user/edit">Bohdan Shushval</a>
+                <a href="/user/sign_out">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
 {% block content %}
 {% endblock %}
 </body>

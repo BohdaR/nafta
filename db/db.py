@@ -42,6 +42,10 @@ class Database:
         self.cursor.execute(f'SELECT * FROM {self.subject} WHERE id=%s;', (int(pk),))
         return self.cursor.fetchall()
 
+    def find_by(self, column, value):
+        self.cursor.execute(f'SELECT * FROM {self.subject} WHERE {column}=%s;', (int(value),))
+        return self.cursor.fetchall()
+
     def create(self, data: dict):
         columns = ','.join(map(str, data.keys()))
         values = ','.join(map(lambda i: f"'{i}'", data.values()))
