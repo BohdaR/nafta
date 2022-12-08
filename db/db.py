@@ -26,8 +26,26 @@ class Database:
             re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', type(self).__name__)))
 
     def __get_condition_template(self, conditions):
-        query = f"WHERE {' AND '.join(map(lambda i: f'{self.subject}.{i}=%s', conditions))}"
-        return query
+        params = []
+        if len(conditions) != 0:
+            for i in conditions:
+                match i[1]:
+                    case 'like':
+                        params.append(f"{self.subject}.{i[0]} LIKE %s ESCAPE ''")
+                    case 'greater':
+                        params.append(f"{self.subject}.{i[0]} > %s")
+                    case 'less':
+                        params.append(f"{self.subject}.{i[0]} < %s")
+                    case 'greater_or_equal':
+                        params.append(f"{self.subject}.{i[0]} >= %s")
+                    case 'less_or_equal':
+                        params.append(f"{self.subject}.{i[0]} <= %s")
+                    case 'not_equal':
+                        params.append(f"{self.subject}.{i[0]} <> %s")
+                    case _:
+                        params.append(f"{self.subject}.{i[0]} = %s")
+            query = f"WHERE {' AND '.join(params)}"
+            return query
 
     def __get_join_query(self, columns, params):
         query = f'''
@@ -42,6 +60,7 @@ class Database:
     def join(self, columns, params, conditions=None):
         if conditions:
             query = f'{self.__get_join_query(columns, params)} {self.__get_condition_template(list(conditions.keys()))}'
+            print(query)
             self.cursor.execute(query, tuple(conditions.values()))
         else:
             self.cursor.execute(self.__get_join_query(columns, params))
