@@ -16,13 +16,13 @@
 <header class="topNav">
     <div class="container">
         <div class="headerNav con">
-            <div class="topNavLeft"><a href="http://127.0.0.1:3000">Papers</a>
+            <div class="topNavLeft">
+                <a href="/">Papers</a>
                 <a href="/brands">Brands</a>
-                <a href="/">Colors</a>
-                <a href="/user/reservation">Countries</a>
-                <a href="/user/reservation">Paper Formats</a>
-                <a href="/user/reservation">Paper Types</a>
-                <a href="/user/reservation">Papers colors</a>
+                <a href="/countries">Countries</a>
+                <a href="/paper_formats">Paper Formats</a>
+                <a href="/paper_types">Paper Types</a>
+                <a href="/binding_types">Binding Types</a>
             </div>
             <div class="topNavRight">
                 <a href="/user/edit">Bohdan Shushval</a>
@@ -31,6 +31,11 @@
         </div>
     </div>
 </header>
+    <h1><span class="blue"></span>Table<span class="blue"></span><span class="yellow">
+        {% block table_name %}
+        {% endblock %}
+    </span></h1>
+    <h1></h1>
 {% block content %}
 {% endblock %}
 </body>

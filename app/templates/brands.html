@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block table_name %}
+    brands
+{% endblock %}
+
+{% block content %}
+    <table class="container">
+        <thead>
+        <tr>
+            <th><h1>id</h1></th>
+            <th><h1>name</h1></th>
+            <th><h1>country</h1></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in brands %}
+            <tr>
+                <td><input value="{{ i.id }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.name }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.country_name }}" type="text" class="col-value"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

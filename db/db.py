@@ -25,17 +25,32 @@ class Database:
             lambda i: i.lower(),
             re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', type(self).__name__)))
 
-    def all(self):
-        self.cursor.execute(f'SELECT * FROM {self.subject}')
+    def __get_condition_template(self, conditions):
+        query = f"WHERE {' AND '.join(map(lambda i: f'{self.subject}.{i}=%s', conditions))}"
+        return query
+
+    def __get_join_query(self, columns, params):
+        query = f'''
+                SELECT {self.subject}.id,
+                    {','.join(map(lambda i: f'{self.subject}.{i}', columns))},
+                    {','.join(map(lambda i: f'{i[0][0]}.{i[0][1]} as {i[1]}', params.items()))}
+                FROM {self.subject}
+                {' '.join(map(lambda i: f'INNER JOIN {i[0][0]} on {i[0][0]}.id = {self.subject}.{pluralizer.singular(i[0][0])}_id', params.items()))}
+                '''
+        print(query)
+        return query
+
+    def join(self, columns, params, conditions=None):
+        if conditions:
+            query = f'{self.__get_join_query(columns, params)} {self.__get_condition_template(list(conditions.keys()))}'
+            print(query)
+            self.cursor.execute(query, tuple(conditions.values()))
+        else:
+            self.cursor.execute(self.__get_join_query(columns, params))
         return self.cursor.fetchall()
 
-    def join(self, table_name):
-        self.cursor.execute(f'''
-                    SELECT {self.subject}.*, {table_name}.* 
-                    FROM {self.subject} 
-                    INNER JOIN {table_name} ON {table_name}.id = {self.subject}.{pluralizer.singular(table_name)}_id;
-                ''')
-
+    def all(self):
+        self.cursor.execute(f'SELECT * FROM {self.subject}')
         return self.cursor.fetchall()
 
     def find(self, pk):

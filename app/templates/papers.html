@@ -2,10 +2,11 @@
 {% block title %}
     Home
 {% endblock %}
+{% block table_name %}
+papers
+{% endblock %}
 
 {% block content %}
-    <h1><span class="blue"></span>Table<span class="blue"></span> <span class="yellow">papers</span></h1>
-    <h1></h1>
     <table class="container">
         <thead>
         <tr>
@@ -15,6 +16,7 @@
             <th><h1>pieces</h1></th>
             <th><h1>paper type</h1></th>
             <th><h1>density</h1></th>
+            <th><h1>paper format</h1></th>
             <th><h1>brand</h1></th>
             <th><h1>binding type</h1></th>
             <th><h1>manufacture country</h1></th>
@@ -22,17 +24,19 @@
         </tr>
         </thead>
         <tbody>
+                  <h1>{{ brands }}</h1>
         {% for i in papers %}
             <tr>
                 <td><input value="{{ i.id }}" type="text" class="col-value"></td>
                 <td><input value="{{ i.description }}" type="text" class="col-value"></td>
                 <td class="large-field"><input name="name" value="{{ i.name }}" type="text" class="col-value"></td>
                 <td><input value="{{ i.pieces }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.paper_type_id }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.paper_type }}" type="text" class="col-value"></td>
                 <td><input value="{{ i.density }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.brand_id }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.binding_type_id }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.manufacture_country_id }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.paper_format }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.brand_name }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.biting_type }}" type="text" class="col-value"></td>
+                <td><input value="{{ i.country_name }}" type="text" class="col-value"></td>
                 <td><input value="{{ i.status }}" type="text" class="col-value"></td>
             </tr>
         {% endfor %}
