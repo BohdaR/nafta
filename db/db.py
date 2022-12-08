@@ -37,13 +37,11 @@ class Database:
                 FROM {self.subject}
                 {' '.join(map(lambda i: f'INNER JOIN {i[0][0]} on {i[0][0]}.id = {self.subject}.{pluralizer.singular(i[0][0])}_id', params.items()))}
                 '''
-        print(query)
         return query
 
     def join(self, columns, params, conditions=None):
         if conditions:
             query = f'{self.__get_join_query(columns, params)} {self.__get_condition_template(list(conditions.keys()))}'
-            print(query)
             self.cursor.execute(query, tuple(conditions.values()))
         else:
             self.cursor.execute(self.__get_join_query(columns, params))
