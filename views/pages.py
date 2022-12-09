@@ -1,4 +1,4 @@
-from flask import request, Blueprint, render_template
+from flask import request, Blueprint, render_template, redirect, url_for
 
 from db.BindingTypes import BindingTypes
 from db.Brands import Brands
@@ -12,28 +12,28 @@ pages = Blueprint('pages', __name__)
 
 @pages.get('/')
 def papers():
-    wanted_columns = ['name', 'description', 'pieces', 'density', 'status']
-    join_params = {
-        ('binding_types', 'name'): "biting_type",
-        ('brands', 'name'): "brand_name",
-        ('countries', 'name'): "country_name",
-        ('paper_formats', 'name'): "paper_format",
-        ('paper_types', 'name'): "paper_type"
-    }
     context = {
-        'papers': Papers().join(wanted_columns, join_params),
+        'papers': Papers().all(),
+        'brands': Brands().all(),
+        'paper_types': PaperTypes().all(),
+        'paper_formats': PaperFormats().all(),
+        'binding_types': BindingTypes().all(),
+        'countries': Countries().all(),
     }
     return render_template('papers.html', **context)
 
 
+@pages.post('/papers/<int:pk>')
+def change_papers(pk):
+    Papers().update(pk, **request.form)
+    return redirect(url_for('pages.papers'))
+
+
 @pages.get('/brands')
 def brands():
-    wanted_columns = ['name', ]
-    join_params = {
-        ('countries', 'name'): "country_name",
-    }
     context = {
-        'brands': Brands().join(wanted_columns, join_params),
+        'brands': Brands().all(),
+        'countries': Countries().all(),
     }
     return render_template('brands.html', **context)
 

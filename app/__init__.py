@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from views.binding_type import binding_type_api
 from views.brand import brand_api
@@ -11,6 +12,8 @@ from views.papers_colors import papers_colors_api
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
+app = Flask(__name__)
+cors = CORS(app)
 
 app.register_blueprint(paper_api)
 app.register_blueprint(brand_api)

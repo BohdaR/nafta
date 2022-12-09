@@ -3,7 +3,7 @@
     Home
 {% endblock %}
 {% block table_name %}
-papers
+    papers
 {% endblock %}
 
 {% block content %}
@@ -24,20 +24,77 @@ papers
         </tr>
         </thead>
         <tbody>
-                  <h1>{{ brands }}</h1>
-        {% for i in papers %}
+        {% for paper in papers %}
             <tr>
-                <td><input value="{{ i.id }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.description }}" type="text" class="col-value"></td>
-                <td class="large-field"><input name="name" value="{{ i.name }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.pieces }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.paper_type }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.density }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.paper_format }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.brand_name }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.biting_type }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.country_name }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.status }}" type="text" class="col-value"></td>
+                <td><input name="pk" value="{{ paper.id }}" type="text" class="col-value"></td>
+                <form action="/papers/{{ paper.id }}" method="post">
+                    <td><input name="description" value="{{ paper.description }}" type="text" class="col-value"></td>
+                    <td class="large-field">
+                        <input name="name" name="name" value="{{ paper.name }}" type="text" class="col-value">
+                    </td>
+                    <td><input name="pieces" value="{{ paper.pieces }}" type="text" class="col-value"></td>
+                    <td>
+                        <select class="picker" name="paper_type_id" id="">
+                            {% for paper_type in paper_types %}
+                                <option
+                                        value="{{ paper_type.id }}"
+                                        {% if paper_type.id == paper.paper_type_id %} selected {% endif %}
+                                >{{ paper_type.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input name="density" value="{{ paper.density }}" type="text" class="col-value"></td>
+                    <td>
+                        <select class="picker" name="paper_type_id" id="">
+                            {% for paper_format in paper_formats %}
+                                <option
+                                        value="{{ paper_format.id }}"
+                                        {% if paper_format.id == paper.paper_format_id %} selected {% endif %}
+                                >{{ paper_format.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="picker" name="brand_id" id="">
+                            {% for brand in brands %}
+                                <option
+                                        value="{{ brand.id }}"
+                                        {% if brand.id == paper.brand_id %} selected {% endif %}
+                                >{{ brand.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="picker" name="binding_type_id" id="">
+                            {% for binding_type in binding_types %}
+                                <option
+                                        value="{{ binding_type.id }}"
+                                        {% if binding_type.id == paper.binding_type_id %} selected {% endif %}
+                                >{{ binding_type.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                         <select class="picker" name="country_id" id="">
+                            {% for country in countries %}
+                                <option
+                                        value="{{ country.id }}"
+                                        {% if country.id == paper.country_id %} selected {% endif %}
+                                >{{ country.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input name="status" value="{{ paper.status }}" type="text" class="col-value"></td>
+                    <td><input value="Save" type="submit" class="col-value"></td>
+                </form>
+                <form action="/papers/{{ paper.id }}" method="GET">
+                    <td><input value="delete" type="submit" class="col-value"></td>
+                </form>
             </tr>
         {% endfor %}
         </tbody>

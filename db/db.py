@@ -67,7 +67,7 @@ class Database:
         return self.cursor.fetchall()
 
     def all(self):
-        self.cursor.execute(f'SELECT * FROM {self.subject}')
+        self.cursor.execute(f'SELECT * FROM {self.subject} ORDER BY id')
         return self.cursor.fetchall()
 
     def find(self, pk):
@@ -89,13 +89,16 @@ class Database:
         return self.cursor.fetchone()
 
     def update(self, pk, **kwargs):
-        params = ''
-        for column, value in kwargs.items():
-            params += f"{column}='{value}',"
+        print(kwargs)
+        if len(kwargs) > 0:
+            params = ''
+            for column, value in kwargs.items():
+                params += f"{column}='{value}',"
 
-        query = f"UPDATE {self.subject} set {params[0:-1]} WHERE id=%s;"
-        self.cursor.execute(query, (int(pk),))
-        self.connection.commit()
+            query = f"UPDATE {self.subject} set {params[0:-1]} WHERE id=%s;"
+            print(query)
+            self.cursor.execute(query, (int(pk),))
+            self.connection.commit()
 
         return self.find(pk)
 

@@ -21,7 +21,17 @@
             <tr>
                 <td><input value="{{ i.id }}" type="text" class="col-value"></td>
                 <td><input value="{{ i.name }}" type="text" class="col-value"></td>
-                <td><input value="{{ i.country_name }}" type="text" class="col-value"></td>
+                <td>
+                    <select class="picker" name="country_id" id="">
+                        {% for country in countries %}
+                            <option
+                                    value="{{ country.id }}"
+                                    {% if country.id == i.country_id %} selected {% endif %}
+                            >{{ country.name }}</option>
+
+                        {% endfor %}
+                    </select>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

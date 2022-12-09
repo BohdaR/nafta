@@ -49,7 +49,7 @@ body {
     background-color: #1F2739;
 }
 
-input {
+input, .picker{
     color: #A7A1AE;
 }
 
@@ -98,7 +98,7 @@ h2 a {
     max-width: 50px;
 }
 
-.container td input{
+.container td input, .picker{
     font-weight: normal;
     font-size: 1em;
     -webkit-box-shadow: 0 2px 2px -2px #0E1119;
@@ -115,11 +115,11 @@ h2 a {
 }
 
 /* Background-color of the odd rows */
-.container tr:nth-child(odd) input {
+.container tr:nth-child(odd) input, .container tr:nth-child(odd) .picker{
     background-color: #323C50;
 }
 
-.container tr:nth-child(even) input {
+.container tr:nth-child(even) input, .container tr:nth-child(even) .picker {
     background-color: #2C3446;
 }
 
@@ -136,14 +136,14 @@ h2 a {
     color: #FB667A;
 }
 
-.container tr input:hover {
+.container tr input:hover{
     background-color: #464A52;
     -webkit-box-shadow: 0 6px 6px -6px #0E1119;
     -moz-box-shadow: 0 6px 6px -6px #0E1119;
     box-shadow: 0 6px 6px -6px #0E1119;
 }
 
-.container td input:hover {
+.container td input:hover, .container td .picker:hover {
     background-color: #FFF842;
     color: #403E10;
     font-weight: bold;
@@ -160,18 +160,17 @@ h2 a {
     }
 }
 
-.col-value {
+.col-value, .picker {
     width: 100%;
     padding: 10px 0;
-    line-height: 28px;
     border: none;
     text-align: center;
 }
 
-input:focus{
+input:focus, .picker{
     outline: none;
 }
 
-.col-value:hover {
+.col-value:hover, .picker {
     border: none;
 }
