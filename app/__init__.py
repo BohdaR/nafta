@@ -1,3 +1,4 @@
+from werkzeug import exceptions
 from flask import Flask
 from flask_cors import CORS
 
@@ -22,3 +23,9 @@ app.register_blueprint(paper_format_api)
 app.register_blueprint(paper_type_api)
 app.register_blueprint(papers_colors_api)
 app.register_blueprint(pages)
+
+
+@app.errorhandler(exceptions.BadRequest)
+def handle_bad_request(e):
+    print(e)
+    return {'errors': e.description}, 400
