@@ -16,12 +16,12 @@ def show(pk):
 
 @country_api.route('/countries', methods=['POST'])
 def create():
-    return Countries().create(request.form)
+    return Countries().create(request.json)
 
 
 @country_api.route('/countries/<int:pk>', methods=['POST', 'PUT', 'PATCH'])
 def update(pk):
-    return Countries().update(pk, **request.form)
+    return Countries().update(pk, **request.json)
 
 
 @country_api.route('/countries/<int:pk>', methods=['DELETE'])

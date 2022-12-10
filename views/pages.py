@@ -23,12 +23,6 @@ def papers():
     return render_template('papers.html', **context)
 
 
-@pages.post('/papers/<int:pk>')
-def change_papers(pk):
-    Papers().update(pk, **request.form)
-    return redirect(url_for('pages.papers'))
-
-
 @pages.get('/brands')
 def brands():
     context = {

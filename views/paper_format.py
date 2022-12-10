@@ -16,12 +16,12 @@ def show(pk):
 
 @paper_format_api.route('/paper_formats', methods=['POST'])
 def create():
-    return PaperFormats().create(request.form)
+    return PaperFormats().create(request.json)
 
 
 @paper_format_api.route('/paper_formats/<int:pk>', methods=['POST', 'PUT', 'PATCH'])
 def update(pk):
-    return PaperFormats().update(pk, **request.form)
+    return PaperFormats().update(pk, **request.json)
 
 
 @paper_format_api.route('/paper_formats/<int:pk>', methods=['DELETE'])

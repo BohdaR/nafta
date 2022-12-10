@@ -12,7 +12,6 @@ from views.papers_colors import papers_colors_api
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-app = Flask(__name__)
 cors = CORS(app)
 
 app.register_blueprint(paper_api)

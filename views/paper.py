@@ -16,12 +16,12 @@ def show(pk):
 
 @paper_api.route('/papers', methods=['POST'])
 def create():
-    return Papers().create(request.form)
+    return Papers().create(request.json)
 
 
 @paper_api.route('/papers/<int:pk>', methods=['POST', 'PUT', 'PATCH'])
 def update(pk):
-    return Papers().update(pk, **request.form)
+    return Papers().update(pk, **request.json)
 
 
 @paper_api.route('/papers/<int:pk>', methods=['DELETE'])

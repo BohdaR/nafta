@@ -89,7 +89,6 @@ class Database:
         return self.cursor.fetchone()
 
     def update(self, pk, **kwargs):
-        print(kwargs)
         if len(kwargs) > 0:
             params = ''
             for column, value in kwargs.items():

@@ -16,12 +16,12 @@ def show(pk):
 
 @binding_type_api.route('/binding_types', methods=['POST'])
 def create():
-    return BindingTypes().create(request.form)
+    return BindingTypes().create(request.json)
 
 
 @binding_type_api.route('/binding_types/<int:pk>', methods=['POST', 'PUT', 'PATCH'])
 def update(pk):
-    return BindingTypes().update(pk, **request.form)
+    return BindingTypes().update(pk, **request.json)
 
 
 @binding_type_api.route('/binding_types/<int:pk>', methods=['DELETE'])

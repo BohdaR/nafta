@@ -16,12 +16,12 @@ def show(pk):
 
 @brand_api.route('/brands', methods=['POST'])
 def create():
-    return Brands().create(request.form)
+    return Brands().create(request.json)
 
 
 @brand_api.route('/brands/<int:pk>', methods=['POST', 'PUT', 'PATCH'])
 def update(pk):
-    return Brands().update(pk, **request.form)
+    return Brands().update(pk, **request.json)
 
 
 @brand_api.route('/brands/<int:pk>', methods=['DELETE'])

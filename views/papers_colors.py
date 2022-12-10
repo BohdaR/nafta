@@ -16,7 +16,7 @@ def show(pk, target_id):
 
 @papers_colors_api.post('/papers/<int:pk>/colors')
 def create(pk):
-    return Papers().add_target_record(pk, 'colors', 'papers_colors', request.form['color_id'])
+    return Papers().add_target_record(pk, 'colors', 'papers_colors', request.json['color_id'])
 
 
 @papers_colors_api.delete('/papers/<int:pk>/colors/<int:target_id>')
