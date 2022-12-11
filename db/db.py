@@ -4,6 +4,7 @@ import psycopg2
 import psycopg2.extras
 import os
 from dotenv import load_dotenv
+from flask import abort
 from pluralizer import Pluralizer
 
 pluralizer = Pluralizer()
@@ -24,6 +25,14 @@ class Database:
         self.subject = '_'.join(map(
             lambda i: i.lower(),
             re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', type(self).__name__)))
+
+    def __execute(self, query, params=None):
+        try:
+            self.cursor.execute(query, params)
+        except psycopg2.Error as error:
+            abort(400, description={'massage': f'Bad request. Please check your input data. Error - {error.pgcode}'})
+
+        self.connection.commit()
 
     def __get_condition_template(self, conditions):
         params = []
@@ -60,32 +69,29 @@ class Database:
     def join(self, columns, params, conditions=None):
         if conditions:
             query = f'{self.__get_join_query(columns, params)} {self.__get_condition_template(list(conditions.keys()))}'
-            print(query)
-            self.cursor.execute(query, tuple(conditions.values()))
+            self.__execute(query, tuple(conditions.values()))
         else:
-            self.cursor.execute(self.__get_join_query(columns, params))
+            self.__execute(self.__get_join_query(columns, params))
         return self.cursor.fetchall()
 
     def all(self):
-        self.cursor.execute(f'SELECT * FROM {self.subject} ORDER BY id')
+        self.__execute(f'SELECT * FROM {self.subject} ORDER BY id')
         return self.cursor.fetchall()
 
     def find(self, pk):
-        self.cursor.execute(f'SELECT * FROM {self.subject} WHERE id=%s;', (int(pk),))
+        self.__execute(f'SELECT * FROM {self.subject} WHERE id=%s;', (int(pk),))
         return self.cursor.fetchall()
 
     def find_by(self, column, value):
-        self.cursor.execute(f'SELECT * FROM {self.subject} WHERE {column}=%s;', (int(value),))
+        self.__execute(f'SELECT * FROM {self.subject} WHERE {column}=%s;', (int(value),))
         return self.cursor.fetchall()
 
     def create(self, data: dict):
         columns = ','.join(map(str, data.keys()))
         values = ','.join(map(lambda i: f"'{i}'", data.values()))
-
         query = f"INSERT INTO {self.subject} ({columns}) VALUES ({values}) RETURNING id, {columns};"
-        self.cursor.execute(query)
-        self.connection.commit()
 
+        self.__execute(query)
         return self.cursor.fetchone()
 
     def update(self, pk, **kwargs):
@@ -95,16 +101,12 @@ class Database:
                 params += f"{column}='{value}',"
 
             query = f"UPDATE {self.subject} set {params[0:-1]} WHERE id=%s;"
-            print(query)
-            self.cursor.execute(query, (int(pk),))
-            self.connection.commit()
-
+            self.__execute(query, (int(pk),))
         return self.find(pk)
 
     def destroy(self, pk):
         record = self.find(pk)
-        self.cursor.execute(f'DELETE FROM {self.subject} WHERE id=%s;', (int(pk),))
-        self.connection.commit()
+        self.__execute(f'DELETE FROM {self.subject} WHERE id=%s;', (int(pk),))
         return record
 
     def __del__(self):
