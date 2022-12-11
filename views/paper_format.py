@@ -6,6 +6,8 @@ paper_format_api = Blueprint('paper_format_api', __name__, url_prefix='/api/v1')
 
 @paper_format_api.get('/paper_formats')
 def index():
+    if request.args.get('name'):
+        return PaperFormats().filter('name', f"%{request.args.get('name')}%")
     return PaperFormats().all()
 
 

@@ -6,6 +6,8 @@ country_api = Blueprint('country_api', __name__, url_prefix='/api/v1')
 
 @country_api.get('/countries')
 def index():
+    if request.args.get('name'):
+        return Countries().filter('name', f"%{request.args.get('name')}%")
     return Countries().all()
 
 

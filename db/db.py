@@ -83,7 +83,11 @@ class Database:
         return self.cursor.fetchall()
 
     def find_by(self, column, value):
-        self.__execute(f'SELECT * FROM {self.subject} WHERE {column}=%s;', (int(value),))
+        self.__execute(f"SELECT * FROM {self.subject} WHERE {column}=%s;", (value,))
+        return self.cursor.fetchall()
+
+    def filter(self, column, value):
+        self.__execute(f"SELECT * FROM {self.subject} WHERE {column} LIKE %s ESCAPE ''", (value,))
         return self.cursor.fetchall()
 
     def create(self, data: dict):

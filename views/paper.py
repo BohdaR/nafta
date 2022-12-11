@@ -5,13 +5,14 @@ paper_api = Blueprint('paper_api', __name__, url_prefix='/api/v1')
 
 
 def check_params(params):
-    if params.get('pieces'):
+    if 'pieces' in params.keys():
         if params.get('pieces', 0) == '':
+            print('here')
             abort(400, description={'massage': "Field pieces can't be empty"})
         elif int(params.get('pieces')) <= 0:
             abort(400, description={'massage': 'Field pieces must be greater than 0'})
 
-    if params.get('density'):
+    if 'density' in params.keys():
         if params.get('density', 0) == '':
             abort(400, description={'massage': "Field density can't be empty"})
         elif float(params.get('density', 0)) <= 0:
@@ -20,6 +21,8 @@ def check_params(params):
 
 @paper_api.get('/papers')
 def index():
+    if request.args.get('name'):
+        return Papers().filter('name', f"%{request.args.get('name')}%")
     return Papers().all()
 
 

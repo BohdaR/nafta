@@ -6,6 +6,8 @@ paper_type_api = Blueprint('paper_type_api', __name__, url_prefix='/api/v1')
 
 @paper_type_api.get('/paper_types')
 def index():
+    if request.args.get('name'):
+        return PaperTypes().filter('name', f"%{request.args.get('name')}%")
     return PaperTypes().all()
 
 

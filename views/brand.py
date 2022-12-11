@@ -6,6 +6,8 @@ brand_api = Blueprint('brand_api', __name__, url_prefix='/api/v1')
 
 @brand_api.get('/brands')
 def index():
+    if request.args.get('name'):
+        return Brands().filter('name', f"%{request.args.get('name')}%")
     return Brands().all()
 
 

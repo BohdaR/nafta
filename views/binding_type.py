@@ -6,6 +6,8 @@ binding_type_api = Blueprint('binding_type_api', __name__, url_prefix='/api/v1')
 
 @binding_type_api.get('/binding_types')
 def index():
+    if request.args.get('name'):
+        return BindingTypes().filter('name', f"%{request.args.get('name')}%")
     return BindingTypes().all()
 
 
