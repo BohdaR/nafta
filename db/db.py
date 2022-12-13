@@ -102,10 +102,10 @@ class Database:
         if len(kwargs) > 0:
             params = ''
             for column, value in kwargs.items():
-                params += f"{column}='{value}',"
+                params += f"{column}=%s,"
 
             query = f"UPDATE {self.subject} set {params[0:-1]} WHERE id=%s;"
-            self.__execute(query, (int(pk),))
+            self.__execute(query, (*kwargs.values(), int(pk)))
         return self.find(pk)
 
     def destroy(self, pk):
