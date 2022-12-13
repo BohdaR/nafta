@@ -34,46 +34,6 @@ class Database:
 
         self.connection.commit()
 
-    def __get_condition_template(self, conditions):
-        params = []
-        if len(conditions) != 0:
-            for i in conditions:
-                match i[1]:
-                    case 'like':
-                        params.append(f"{self.subject}.{i[0]} LIKE %s ESCAPE ''")
-                    case 'greater':
-                        params.append(f"{self.subject}.{i[0]} > %s")
-                    case 'less':
-                        params.append(f"{self.subject}.{i[0]} < %s")
-                    case 'greater_or_equal':
-                        params.append(f"{self.subject}.{i[0]} >= %s")
-                    case 'less_or_equal':
-                        params.append(f"{self.subject}.{i[0]} <= %s")
-                    case 'not_equal':
-                        params.append(f"{self.subject}.{i[0]} <> %s")
-                    case _:
-                        params.append(f"{self.subject}.{i[0]} = %s")
-            query = f"WHERE {' AND '.join(params)}"
-            return query
-
-    def __get_join_query(self, columns, params):
-        query = f'''
-                SELECT {self.subject}.id,
-                    {','.join(map(lambda i: f'{self.subject}.{i}', columns))},
-                    {','.join(map(lambda i: f'{i[0][0]}.{i[0][1]} as {i[1]}', params.items()))}
-                FROM {self.subject}
-                {' '.join(map(lambda i: f'INNER JOIN {i[0][0]} on {i[0][0]}.id = {self.subject}.{pluralizer.singular(i[0][0])}_id', params.items()))}
-                '''
-        return query
-
-    def join(self, columns, params, conditions=None):
-        if conditions:
-            query = f'{self.__get_join_query(columns, params)} {self.__get_condition_template(list(conditions.keys()))}'
-            self.__execute(query, tuple(conditions.values()))
-        else:
-            self.__execute(self.__get_join_query(columns, params))
-        return self.cursor.fetchall()
-
     def all(self):
         self.__execute(f'SELECT * FROM {self.subject} ORDER BY id')
         return self.cursor.fetchall()
